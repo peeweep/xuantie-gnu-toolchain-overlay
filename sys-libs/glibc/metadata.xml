@@ -25,6 +25,7 @@
 		<flag name="systemtap">enable systemtap static probe points</flag>
 	</use>
 	<upstream>
+		<remote-id type="github">T-head-Semi/glibc</remote-id>
 		<remote-id type="cpe">cpe:/a:gnu:glibc</remote-id>
 	</upstream>
 </pkgmetadata>

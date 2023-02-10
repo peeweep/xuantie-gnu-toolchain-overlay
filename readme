@@ -1,0 +1,51 @@
+TODO: Prebuilt riscv qemu bootable image
+
+Ebuilds in this overlay:
+  * binutils-2.35 [2]
+  * glibc-2.33 [3]
+  * linux-headers-5.10.4 [4]
+  * gcc-10.2.0 [5]
+
+This overlay packaged xuantie-gnu-toolchain[1] 2.6.1 as systemd level toolchain (not cross-compile
+toolchain), and only this toolchain is kept in the system, so the above packages may be downgraded.
+
+The gentoo commit at this point is 010f5ff4, after synchronizing the gentoo repository,
+there are a few things you need to check manually:
+
+1. add this ovelray:
+
+  emerge --ask dev-vcs/git
+  eselect repository add xuantie-gnu-toolchain git https://github.com/peeweep/gentoo-overlay.git
+  emerge --sync
+
+2. edit /var/db/repos/gentoo/profiles/package.mask and remove the glibc/binutils:
+
+# Andreas K. Hüttel <dilfridge@gentoo.org> (2017-05-21)
+# (and others, updated later)
+# These old versions of toolchain packages (binutils, gcc, glibc) are no
+# longer officially supported and are not suitable for general use. Using
+# these packages can result in build failures (and possible breakage) for
+# many packages, and may leave your system vulnerable to known security
+# exploits.
+# If you still use one of these old toolchain packages, please upgrade (and
+# switch the compiler / the binutils) ASAP. If you need them for a specific
+# (isolated) use case, feel free to unmask them on your system.
+<sys-libs/glibc-2.36-r5
+<sys-devel/binutils-2.38
+
+3. edit /var/db/repos/gentoo/sys-libs/libseccomp/libseccomp-2.5.4.ebuild (the latest version of 
+the ebuild that includes ~riscv keyword) and change the minimum linux-headers dependency version
+to >=sys-kernel/linux-headers-5.10.
+
+4. update this world:
+
+  emerge -avuDN @world
+
+
+Refs:
+
+[1] xuantie-gnu-toolchain: https://github.com/T-head-Semi/xuantie-gnu-toolchain
+[2] binutils: https://github.com/T-head-Semi/binutils-gdb/tree/THead-2.6.1
+[3] glibc: https://github.com/T-head-Semi/glibc/tree/6aea17dafd37cf8b81c9cca05a8928ebc54f7efb
+[4] linux-headers: https://github.com/T-head-Semi/xuantie-gnu-toolchain/tree/23fdf1028b63bb52ec0900f0021617e50c1f9af0/linux-headers/include
+[5] gcc: https://github.com/T-head-Semi/gcc/tree/THead-2.6.1

@@ -2,7 +2,7 @@ Rootfs tarball: https://dev.onfoo.top/~peeweep/t-head-v2.6.1/readme.txt
 binhost: https://dev.onfoo.top/~peeweep/binpkgs/riscv64-qemu-t-head-gnu-toolchain
 
 Ebuilds in this overlay:
-  * binutils-2.35 / gdb-8.3 [2]
+  * binutils-2.35 / gdb-10.0.50.20200724 [2]
   * glibc-2.33 [3]
   * linux-headers-5.10.4 [4]
   * gcc-10.2.0 [5]
